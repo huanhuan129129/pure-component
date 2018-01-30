@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    浅比较 测试，打开console查看结果
+</body>
+<script>
+    const hasOwn = Object.prototype.hasOwnProperty
+
+    function is(x, y) {
+    if (x === y) {
+        return x !== 0 || y !== 0 || 1 / x === 1 / y
+    } else {
+        return x !== x && y !== y
+    }
+    }
+
+    function shallowEqual(objA, objB) {
+    if (is(objA, objB)) return true
+
+    if (typeof objA !== 'object' || objA === null ||
+        typeof objB !== 'object' || objB === null) {
+        return false
+    }
+
+    const keysA = Object.keys(objA)
+    const keysB = Object.keys(objB)
+
+    if (keysA.length !== keysB.length) return false
+
+    for (let i = 0; i < keysA.length; i++) {
+        if (!hasOwn.call(objB, keysA[i]) ||
+            !is(objA[keysA[i]], objB[keysA[i]])) {
+        return false
+        }
+    }
+
+    return true
+    }
+
+    var data = [1,2,3,4,5,6];
+    var data2 = data.pop();
+    console.log('data is shadowEqual data2', shallowEqual(data, data2));
+
+    var objData = [
+        {   bro_uvpv: "4/2",
+            item_id: "ms51ba0rl3j",
+            sold_num: 7,
+            stock_num: 700,
+        },
+        {   bro_uvpv: "4/2",
+            item_id: "ms51ba0rl3j",
+            sold_num: 7,
+            stock_num: 700,
+        },
+        {   bro_uvpv: "4/2",
+            item_id: "ms51ba0rl3j",
+            sold_num: 7,
+            stock_num: 700,
+        }
+    ];
+    var objData2 = objData;
+    objData2.pop();
+    console.log('objData is shadowEqual objData2 ? ', shallowEqual(objData, objData2));
+</script>
+</html>
